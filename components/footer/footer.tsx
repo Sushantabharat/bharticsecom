@@ -48,13 +48,13 @@ const Footer = () => {
         </nav>
         <nav>
           <h6 className="footer-title">Become Our Partner</h6>
-          <a href="/new-car-dealer" className="link link-hover">
+          <a href="/become-out-partner" className="link link-hover">
             New Car Dealer
           </a>
-          <a href="/used-car-dealer" className="link link-hover">
+          <a href="/become-out-partner" className="link link-hover">
             Used Car Dealer
           </a>
-          <a href="/oem" className="link link-hover ">
+          <a href="/become-out-partner" className="link link-hover ">
             OEM
           </a>
           <a href="/register-service" className="link link-hover ">

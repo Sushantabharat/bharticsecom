@@ -13,6 +13,20 @@ type Inputs = {
   confirmPassword: string
 }
 
+const getPasswordStrength = (password: string): { label: string; color: string } => {
+  let score = 0
+
+  if (password.length >= 8) score++
+  if (/[A-Z]/.test(password)) score++
+  if (/[a-z]/.test(password)) score++
+  if (/\d/.test(password)) score++
+  if (/[\W_]/.test(password)) score++
+
+  if (score <= 2) return { label: 'Weak', color: 'text-red-500' }
+  if (score === 3 || score === 4) return { label: 'Medium', color: 'text-yellow-500' }
+  return { label: 'Strong', color: 'text-green-600' }
+}
+
 const Form = () => {
   const { data: session } = useSession()
 
@@ -23,6 +37,7 @@ const Form = () => {
     register,
     handleSubmit,
     getValues,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     defaultValues: {
@@ -32,6 +47,8 @@ const Form = () => {
       confirmPassword: '',
     },
   })
+  const passwordValue = watch('password')
+  const passwordStrength = getPasswordStrength(passwordValue || '')
   useEffect(() => {
     if (session && session.user) {
       router.push(callbackUrl)
@@ -144,6 +161,12 @@ const Form = () => {
             />
             {errors.confirmPassword?.message && (
               <div className="text-error">{errors.confirmPassword.message}</div>
+            )}
+            {passwordValue && (
+
+              <p className={`text-sm mb-1 font-medium ${passwordStrength.color}`}>
+                Strength: {passwordStrength.label}
+              </p>
             )}
           </div>
           <div className="my-2">

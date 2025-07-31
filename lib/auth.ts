@@ -36,6 +36,15 @@ export const config = {
     GoogleProvider({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
       clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET!,
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          picture: profile.picture,
+          avatar: profile.picture, // Use picture as avatar
+        }
+      }
     })
   ],
   pages: {
@@ -49,7 +58,6 @@ export const config = {
 
       if (account?.provider === 'google' && profile) {
         let existingUser = await UserModel.findOne({ email: profile.email })
-
         if (!existingUser) {
           existingUser = await UserModel.create({
             name: profile.name,
@@ -65,6 +73,7 @@ export const config = {
           email: existingUser.email,
           name: existingUser.name,
           isAdmin: existingUser.isAdmin,
+          avatar: existingUser.avatar || '',
         }
       }
 
@@ -75,6 +84,7 @@ export const config = {
           email: user.email,
           name: user.name,
           isAdmin: user.isAdmin,
+          avatar: user.avatar || '',
         }
       }
       if (trigger === 'update' && session) {

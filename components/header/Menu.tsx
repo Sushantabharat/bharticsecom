@@ -3,6 +3,7 @@ import useCartService from '@/lib/hooks/useCartStore'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { SearchBox } from './SearchBox'
 
 const Menu = () => {
@@ -17,7 +18,7 @@ const Menu = () => {
     init()
   }
   const { data: session, status } = useSession()
-  console.log("Session Data", session)
+  console.log("Session Data", session?.user.avatar)
   console.log("Status Session", status)
 
   const handleClick = () => {
@@ -59,6 +60,10 @@ const Menu = () => {
               <li>
                 <div className="dropdown dropdown-bottom dropdown-end">
                   <label tabIndex={0} className="btn btn-ghost rounded-btn">
+                    {session.user.avatar &&
+                      <Image src={session?.user?.avatar} width={30} height={30} alt="profile Image" className="rounded-full"
+                      />
+                    }
                     {session.user.name}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
